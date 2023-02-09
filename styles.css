@@ -1,0 +1,47 @@
+html {
+  background: #000;
+  overflow-y: auto;
+}
+
+body {
+  /* min-height: 150vh; */
+  /* font-family: 'Merriweather', serif; */
+  /* line-height: 1.5;
+  font-size: 3vmin;
+  @media (min-width: 600px) {
+    font-size: 18px;
+  } */
+}
+.div1 {
+  width: 1px;
+  height: 600vh;
+  background-color: transparent;
+  position: absolute;
+}
+
+.mainTextContainer {
+  width: 100%;
+  height: 200px;
+  /* background-color: blue; */
+  color: white;
+  font-size: 49px;
+  vertical-align: middle;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  position: fixed;
+  top: 40%;
+  left: 100%;
+  transition: transform 1s ease-out;
+}
+
+.mainText {
+  color: white;
+  font-size: 5vw;
+  margin-left: 10px;
+}
+
+.mainTextEnding {
+  color: #000;
+  transition: color 1s ease-out;
+}
