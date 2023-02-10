@@ -11,14 +11,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
     <!-- <link rel="icon" href="/favicon.ico" /> -->
   </head>
   <body>
     <div class="header">
-      <a href="https://github.com/tilenkavcic"><img id="github" alt="GitHub" src="photos/github-logo-white.png" /></a>
-      <a href="https://www.linkedin.com/in/tilenkavcic/"
-        ><img id="linkedin" alt="LinkedIn" src="photos/linkedin-logo.png"
+      <a href="https://github.com/tilenkavcic" target="_blank"
+        ><img id="github" alt="GitHub" src="photos/github-logo-white.png"
+      /></a>
+      <a href="https://www.linkedin.com/in/tilenkavcic/" target="_blank"
+        ><img id="linkedin" alt="LinkedIn" src="photos/linkedin-logo-white.png"
       /></a>
       <!-- <a href="https://meloan.si" target="_blank"><img id="meloan" alt="MeLoan" src="photos/meloan-logo.png" /></a> -->
     </div>
@@ -32,14 +34,29 @@
       <div class="scrollContainer">
         <div class="scrollAnimation"></div>
       </div>
-    </main>
 
-    <footer class="header">
-      <a href="https://github.com/tilenkavcic"><img id="github" alt="GitHub" src="photos/github-logo-white.png" /></a>
-      <a href="https://www.linkedin.com/in/tilenkavcic/"
-        ><img id="linkedin" alt="LinkedIn" src="photos/linkedin-logo.png"
-      /></a>
-      <!-- <a href="https://meloan.si" target="_blank"><img id="meloan" alt="MeLoan" src="photos/meloan-logo.png" /></a> -->
-    </footer>
+      <div class="linksContainer">
+        <a href="https://www.meloan.si" target="_blank" class="link-component">
+          <div class="logo-title">
+            <img src="photos/meloan-logo.png" alt="meloan" class="logo" />
+            <h2 class="title">MeLoan</h2>
+            <span class="subtitle">Co-founder</span>
+          </div>
+          <p class="description">
+            Get your personalized mortgage offer from any bank in one place
+          </p>
+        </a>
+        <a href="https://fast-link.vercel.app" target="_blank" class="link-component">
+          <div class="logo-title">
+            <img src="photos/log.png" alt="meloan" class="logo" />
+            <h2 class="title">The Fast Link</h2>
+          </div>
+          <p class="description">
+            Make subscribing to your podcast a breeze
+
+          </p>
+        </a>
+      </div>
+    </main>
   </body>
 </html>

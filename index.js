@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const mainText = document.querySelector(".mainText");
   const mainTextEnding = document.querySelector(".mainTextEnding");
   const header = document.querySelector(".header");
+  const linksContainer = document.querySelector(".linksContainer");
   const scrollAnim = document.querySelector(".scrollContainer");
 
-  
   if (mainTextContainer) {
     const viewportHeight = window.innerHeight;
     const contentHeight = document.body.offsetHeight;
@@ -22,26 +22,10 @@ document.addEventListener("DOMContentLoaded", function () {
       translateX = progress;
       translateX = -Math.min(translateX, minTranslateX);
 
-      console.log(progress);
-
-
-      if (progress >= scrollAnimTransition) {
-        scrollAnim.style.opacity = "0";
-      } else {
-        scrollAnim.style.opacity = "100";
-      }
-
-      if (progress >= emailTransition) {
-        mainTextEnding.style.color = "#fff";
-      } else {
-        mainTextEnding.style.color = "#000";
-      }
-
-      if (progress >= linksTransition) {
-        header.style.opacity = "100";
-      } else {
-        header.style.opacity = "0";
-      }
+      scrollAnim.style.opacity = progress >= scrollAnimTransition ? "0" : "100";
+      mainTextEnding.style.color = progress >= emailTransition ? "#fff" : "#000"
+      header.style.opacity = progress >= linksTransition ? "100" : "0"
+      linksContainer.style.opacity = progress >= linksTransition ? "100" : "0"
 
       mainTextContainer.style.transform = `translateX(${translateX}%)`;
     });
