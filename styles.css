@@ -71,7 +71,7 @@ body {
 
 .scrollingDiv {
   width: 1px;
-  height: 700vh;
+  height: 350vh;
   background-color: transparent;
   position: absolute;
 }
