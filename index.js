@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("scroll", function () {
       let scrollY = window.scrollY;
       let progress = scrollY / (contentHeight - viewportHeight);
-      progress *= 200;
+      progress *= 80;
       translateX = progress;
       translateX = -Math.min(translateX, minTranslateX);
 
