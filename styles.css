@@ -1,10 +1,11 @@
 html {
   background: #000;
   overflow-y: auto;
+  font-family: "Work Sans", sans-serif;
 }
 
 body {
-  /* min-height: 150vh; */
+  min-height: 150vh;
   /* font-family: 'Merriweather', serif; */
   /* line-height: 1.5;
   font-size: 3vmin;
@@ -44,4 +45,23 @@ body {
 .mainTextEnding {
   color: #000;
   transition: color 1s ease-out;
+}
+
+/* HEADER */
+
+.header {
+  position: fixed;
+  text-align: center;
+  top: 20px;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+#github {
+  height: 33px;
+}
+#meloan {
+  margin-left: 15px;
+  height: 24px;
 }
