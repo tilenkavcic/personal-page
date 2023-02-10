@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const contentHeight = document.body.offsetHeight;
     const minTranslateX = 90;
 
-    const scrollAnimTransition = 40;
+    const scrollAnimTransition = 5;
     const emailTransition = minTranslateX + 40;
     const linksTransition = minTranslateX + 80;
 
