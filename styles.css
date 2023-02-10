@@ -118,17 +118,26 @@ body {
 }
 
 @keyframes tilt-shaking {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(5deg); }
-  50% { transform: rotate(0eg); }
-  75% { transform: rotate(-5deg); }
-  100% { transform: rotate(0deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0eg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .socialLink img:hover {
-  animation: tilt-shaking 0.3s ;
+  animation: tilt-shaking 0.3s;
 }
-
 
 /* .socialLink:hover {
   background-color: #000000;
@@ -201,9 +210,8 @@ body {
   line-height: calc(1ex / 0.32);
 }
 
-/* 
-@media only screen and (max-width: 300px) {
-  body {
-    background-color: red !important;
-  }
+/* @media only screen and (max-width: 767px) {
+  .socialLink img {
+    height: 33px;
+  }  
 } */
