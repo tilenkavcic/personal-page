@@ -13,6 +13,55 @@ body {
     font-size: 18px;
   } */
 }
+
+.scrollContainer {
+  position: fixed;
+  bottom: 70px;
+  width: 100%;
+
+  display: flex;
+	align-items: center;
+	justify-content: space-around;
+
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
+
+.scrollAnimation {
+  width: 50px;
+  height: 90px;
+  border: 3px solid #e2e2e2;
+  border-radius: 60px;
+  position: relative;
+}
+.scrollAnimation::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #9b9b9b;
+  border-radius: 50%;
+  opacity: 1;
+  animation: wheel 2s infinite;
+  -webkit-animation: wheel 2s infinite;
+}
+
+@keyframes wheel {
+  to {
+    opacity: 0;
+    top: 60px;
+  }
+}
+@-webkit-keyframes wheel {
+  to {
+    opacity: 0;
+    top: 60px;
+  }
+}
+
 .div1 {
   width: 1px;
   height: 600vh;
@@ -61,7 +110,11 @@ body {
 #github {
   height: 33px;
 }
-#meloan {
+#linkedin {
+  height: 33px;
   margin-left: 15px;
+}
+#meloan {
   height: 24px;
+  margin-bottom: 3px;
 }
