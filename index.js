@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
       translateX = -Math.min(translateX, minTranslateX);
 
       scrollAnim.style.opacity = progress >= scrollAnimTransition ? "0" : "100";
-      mainTextEnding.style.color = progress >= emailTransition ? "#fff" : "#000"
+      mainTextEnding.style.color = progress >= emailTransition ? "inherit" : "#000"
       header.style.opacity = progress >= linksTransition ? "100" : "0"
       linksContainer.style.opacity = progress >= linksTransition ? "100" : "0"
 
