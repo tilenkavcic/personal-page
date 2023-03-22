@@ -106,6 +106,19 @@ body {
   transition: opacity 0.3s ease-out;
 }
 
+@keyframes wheel {
+  to {
+    opacity: 0;
+    top: 60px;
+  }
+}
+@-webkit-keyframes wheel {
+  to {
+    opacity: 0;
+    top: 60px;
+  }
+}
+
 .scrollAnimation {
   width: 50px;
   height: 90px;
@@ -126,19 +139,6 @@ body {
   opacity: 1;
   animation: wheel 2s infinite;
   -webkit-animation: wheel 2s infinite;
-}
-
-@keyframes wheel {
-  to {
-    opacity: 0;
-    top: 60px;
-  }
-}
-@-webkit-keyframes wheel {
-  to {
-    opacity: 0;
-    top: 60px;
-  }
 }
 
 /* PORTFOLIO LINKS */
@@ -211,7 +211,6 @@ body {
   .mainTextContainer {
     top: 30%;
   }
-
   .linksContainer {
     display: grid;
     width: 100%;
