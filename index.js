@@ -48,7 +48,7 @@ const copyDivToClipboard = async (event) => {
   try {
     await navigator.clipboard.writeText("hey@tilenkavcic.com");
 
-    // if (emailCopiedAlert.style.opacity != 0) return;
+    if (emailCopiedAlert.style.opacity != 0) return;
 
     // Move alert to cursor
     // prevent alert to be off screen
@@ -74,7 +74,7 @@ const copyDivToClipboard = async (event) => {
 
     // Fade out alert
     setTimeout(() => {
-      // emailCopiedAlert.style.opacity = 0;
+      emailCopiedAlert.style.opacity = 0;
       emailCopiedAlert.style.animation = ``;
     }, 3000);
   } catch (err) {
