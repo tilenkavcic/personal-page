@@ -21,9 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
       let progress = scrollY / (contentHeight - viewportHeight);
 
       // Animate background gradient
-      mainHtml.style.background = `conic-gradient(from ${progress/20}turn at 0% 0%, #00c476, 20%, #82b0ff, 90%, #00c476)`;
+      mainHtml.style.background = `conic-gradient(from ${
+        progress / 20
+      }turn at 0% 0%, #00c476, 20%, #82b0ff, 90%, #00c476)`;
       mainHtml.style.backgroundAttachment = `fixed`;
-      console.log(progress/9)
       // Adjust progress value for transitions
       progress *= 80;
       translateX = progress;
@@ -31,11 +32,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Specify fade in on scroll transitions
       scrollAnim.style.opacity = progress >= scrollAnimTransition ? "0" : "100";
-      mainTextEnding.style.color = progress >= emailTransition ? "inherit" : "#00000000"
-      header.style.opacity = progress >= linksTransition ? "100" : "0"
-      linksContainer.style.opacity = progress >= linksTransition ? "100" : "0"
+      mainTextEnding.style.color = progress >= emailTransition ? "inherit" : "#00000000";
+      header.style.opacity = progress >= linksTransition ? "100" : "0";
+      linksContainer.style.opacity = progress >= linksTransition ? "100" : "0";
 
       mainTextContainer.style.transform = `translateX(${translateX}%)`;
     });
   }
 });
+
+const copyDivToClipboard = async (event) => {
+  const emailCopiedAlert = document.querySelector(".emailCopiedAlert");
+  const mainText = document.querySelector(".mainText");
+
+  try {
+    await navigator.clipboard.writeText("hey@tilenkavcic.com");
+
+    // if (emailCopiedAlert.style.opacity != 0) return;
+
+    // Move alert to cursor
+    // prevent alert to be off screen
+    let divWidth = emailCopiedAlert.offsetWidth;
+    let divLeft = event.clientX - divWidth / 2;
+    divLeft = Math.max(divLeft, 8); 
+
+    let screenWidth = screen.width
+
+    divLeft = Math.min(divLeft, screenWidth - divWidth-10)
+    emailCopiedAlert.style.left = `${divLeft}px`;
+
+    console.log()
+
+    let textTopPostiton = mainText.getBoundingClientRect().top;
+    let divHeight = emailCopiedAlert.offsetHeight;
+    emailCopiedAlert.style.top = `${textTopPostiton - divHeight - 10}px`;
+
+    // Show alert
+    emailCopiedAlert.style.animation = `bounce2 1.5s ease`;
+
+    emailCopiedAlert.style.opacity = 1;
+
+    // Fade out alert
+    setTimeout(() => {
+      // emailCopiedAlert.style.opacity = 0;
+      emailCopiedAlert.style.animation = ``;
+    }, 3000);
+  } catch (err) {
+    console.error("Failed to copy to clipborard: ", err);
+  }
+};
