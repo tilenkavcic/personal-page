@@ -1,7 +1,8 @@
 html {
-  background: #000;
+  background: conic-gradient(from 0turn at 0% 0%, #00c476, 10%, #82b0ff, 90%, #00c476);
+  background-attachment: fixed;
   overflow-y: auto;
-  color: #cccccc;
+  color: hsla(0, 0%, 100%, 0.95);
 }
 
 a {
@@ -88,7 +89,7 @@ body {
 }
 
 .mainTextEnding {
-  color: #000;
+  color: #ffffff00;
   transition: color 1s ease-out;
 }
 
@@ -152,10 +153,13 @@ body {
   margin-bottom: 20px;
   opacity: 0;
   transition: opacity 1s ease-out;
+
 }
 
 .linksComponent {
-  background-color: #141414;
+  background-color: rgba(255, 255, 255, .15);  
+  backdrop-filter: blur(5px);
+  color:#ffffffdc;
 
   display: inline-block;
   padding: 15px;
@@ -163,7 +167,7 @@ body {
 
   width: 300px;
   height: 150px;
-  border: 3px solid rgb(121, 121, 121);
+  border: 3px solid rgba(255, 255, 255, 0.24);
   border-radius: 24px;
 
   text-align: left;
@@ -173,13 +177,13 @@ body {
 }
 
 .linksComponent:hover {
-  background-color: #000000;
-  border: 3px solid rgb(184, 184, 184);
-  box-shadow: 0px 0px 3rem 15px #535353;
+  background-color: #82b0ff79;
+  border: 3px solid #ffffffa2;
+  box-shadow: 0px 0px 3rem 15px #ffffff6e;
 }
 
 .linksHeader {
-  color: #fff;
+  color: #ffffff;
   display: flex;
   align-items: center;
   margin-bottom: 0px;
