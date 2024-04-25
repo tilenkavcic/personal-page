@@ -68,7 +68,7 @@ const copyDivToClipboard = async (event) => {
     emailCopiedAlert.style.top = `${textTopPostiton - divHeight - 10}px`;
 
     // Show alert
-    emailCopiedAlert.style.animation = `bounce2 1.5s ease`;
+    // emailCopiedAlert.style.animation = `bounce2 1.5s ease`;
 
     emailCopiedAlert.style.opacity = 1;
 
