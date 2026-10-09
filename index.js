@@ -1,80 +1,121 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const mainHtml = document.querySelector("html");
+  const bgGradient = document.querySelector(".bgGradient");
   const mainTextContainer = document.querySelector(".mainTextContainer");
-  const mainText = document.querySelector(".mainText");
   const mainTextEnding = document.querySelector(".mainTextEnding");
   const header = document.querySelector(".header");
   const linksContainer = document.querySelector(".linksContainer");
   const scrollAnim = document.querySelector(".scrollContainer");
 
-  if (mainTextContainer) {
-    const viewportHeight = window.innerHeight;
-    const contentHeight = document.body.offsetHeight;
-    const minTranslateX = 90;
+  if (!mainTextContainer) return;
 
-    const scrollAnimTransition = 5;
-    const emailTransition = minTranslateX + 40;
-    const linksTransition = minTranslateX + 80;
+  const minTranslateX = 90;
 
-    window.addEventListener("scroll", function () {
-      let scrollY = window.scrollY;
-      let progress = scrollY / (contentHeight - viewportHeight);
-
-      // Animate background gradient
-      mainHtml.style.background = `conic-gradient(from ${
-        progress / 20
-      }turn at 0% 0%, #00c476, 20%, #82b0ff, 90%, #00c476)`;
-      mainHtml.style.backgroundAttachment = `fixed`;
-      // Adjust progress value for transitions
-      progress *= 80;
-      translateX = progress;
-      translateX = -Math.min(translateX, minTranslateX);
-
-      // Specify fade in on scroll transitions
-      scrollAnim.style.opacity = progress >= scrollAnimTransition ? "0" : "100";
-      mainTextEnding.style.color = progress >= emailTransition ? "inherit" : "#00000000";
-      header.style.opacity = progress >= linksTransition ? "100" : "0";
-      linksContainer.style.opacity = progress >= linksTransition ? "100" : "0";
-
-      mainTextContainer.style.transform = `translateX(${translateX}%)`;
-    });
+  function getMaxScroll() {
+    return Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
   }
+
+  let maxScroll = getMaxScroll();
+
+  let resizeTimeout;
+  window.addEventListener(
+    "resize",
+    function () {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(function () {
+        maxScroll = getMaxScroll();
+        update();
+      }, 100);
+    },
+    { passive: true }
+  );
+
+  let isTicking = false;
+
+  function update() {
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
+
+    // Animate background gradient
+    if (bgGradient) {
+      const turn = progress * 0.05;
+      bgGradient.style.setProperty("--bg-turn", `${turn}turn`);
+    }
+
+    // Slide main text: progress 0 to 0.5 maps to translateX 0 to -minTranslateX
+    const slideProgress = Math.min(progress / 0.5, 1);
+    const translateX = -(slideProgress * minTranslateX);
+    mainTextContainer.style.transform = `translate3d(${translateX}%, 0, 0)`;
+
+    // Scroll indicator fades out quickly once scrolling starts
+    if (scrollAnim) {
+      scrollAnim.classList.toggle("hidden", progress > 0.05);
+    }
+
+    // Reveal email ending after text has slid into view
+    if (mainTextEnding) {
+      mainTextEnding.classList.toggle("visible", progress >= 0.5);
+    }
+
+    // Reveal header and links towards bottom
+    const showLinks = progress >= 0.75;
+    if (header) {
+      header.classList.toggle("visible", showLinks);
+    }
+    if (linksContainer) {
+      linksContainer.classList.toggle("visible", showLinks);
+    }
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!isTicking) {
+        window.requestAnimationFrame(function () {
+          update();
+          isTicking = false;
+        });
+        isTicking = true;
+      }
+    },
+    { passive: true }
+  );
+
+  update();
 });
 
-const copyDivToClipboard = async (event) => {
+let copyTimeout;
+
+window.copyDivToClipboard = async function (event) {
   const emailCopiedAlert = document.querySelector(".emailCopiedAlert");
   const mainText = document.querySelector(".mainText");
 
   try {
     await navigator.clipboard.writeText("hey@tilenkavcic.com");
 
-    if (emailCopiedAlert.style.opacity != 0) return;
+    if (!emailCopiedAlert || !mainText) return;
 
-    // Move alert to cursor
-    // prevent alert to be off screen
-    let divWidth = emailCopiedAlert.offsetWidth;
+    const divWidth = emailCopiedAlert.offsetWidth;
+    const windowWidth = window.innerWidth;
     let divLeft = event.clientX - divWidth / 2;
-    divLeft = Math.max(divLeft, 8); 
+    divLeft = Math.max(divLeft, 12);
+    divLeft = Math.min(divLeft, windowWidth - divWidth - 12);
 
-    let screenWidth = screen.width
+    const textRect = mainText.getBoundingClientRect();
+    const divHeight = emailCopiedAlert.offsetHeight;
+    const divTop = Math.max(textRect.top - divHeight - 12, 12);
 
-    divLeft = Math.min(divLeft, screenWidth - divWidth-10)
     emailCopiedAlert.style.left = `${divLeft}px`;
+    emailCopiedAlert.style.top = `${divTop}px`;
+    emailCopiedAlert.classList.add("visible");
 
-    console.log()
+    if (copyTimeout) {
+      clearTimeout(copyTimeout);
+    }
 
-    let textTopPostiton = mainText.getBoundingClientRect().top;
-    let divHeight = emailCopiedAlert.offsetHeight;
-    emailCopiedAlert.style.top = `${textTopPostiton - divHeight - 10}px`;
-
-    emailCopiedAlert.style.opacity = 1;
-
-    // Fade out alert
-    setTimeout(() => {
-      emailCopiedAlert.style.opacity = 0;
-      emailCopiedAlert.style.animation = ``;
-    }, 3000);
+    copyTimeout = setTimeout(() => {
+      emailCopiedAlert.classList.remove("visible");
+    }, 2500);
   } catch (err) {
-    console.error("Failed to copy to clipborard: ", err);
+    console.error("Failed to copy to clipboard: ", err);
   }
 };

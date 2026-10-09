@@ -1,8 +1,24 @@
+@property --bg-turn {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0turn;
+}
+
 html {
-  background: conic-gradient(from 0turn at 0% 0%, #00c476, 10%, #82b0ff, 90%, #00c476);
-  background-attachment: fixed;
   overflow-y: auto;
   color: hsla(0, 0%, 100%, 0.95);
+  background-color: #00c476;
+}
+
+.bgGradient {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  background: conic-gradient(from var(--bg-turn, 0turn) at 0% 0%, #00c476, 20%, #82b0ff, 90%, #00c476);
+  will-change: transform;
 }
 
 a {
@@ -12,6 +28,7 @@ a {
 body {
   min-height: 150vh;
   font-family: "Work Sans", sans-serif;
+  margin: 0;
 }
 
 .contentLength {
@@ -19,6 +36,7 @@ body {
   height: 350vh;
   background-color: transparent;
   position: absolute;
+  pointer-events: none;
 }
 
 /* HEADER */
@@ -28,16 +46,34 @@ body {
   top: 20px;
   width: 100%;
   opacity: 0;
-  transition: opacity 1s ease-out;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, -10px, 0);
+  transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s ease-out;
+  z-index: 10;
 }
 
-#github {
+.header.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
 }
+
 #linkedin {
   margin-left: 15px;
 }
+
+.socialLink {
+  display: inline-block;
+  cursor: pointer;
+}
+
 .socialLink img {
   height: 33px;
+  display: block;
+  transition: transform 0.2s ease;
+  will-change: transform;
 }
 
 @keyframes tilt-shaking {
@@ -48,7 +84,7 @@ body {
     transform: rotate(5deg);
   }
   50% {
-    transform: rotate(0eg);
+    transform: rotate(0deg);
   }
   75% {
     transform: rotate(-5deg);
@@ -58,8 +94,8 @@ body {
   }
 }
 
-.socialLink img:hover {
-  animation: tilt-shaking 0.3s;
+.socialLink:hover img {
+  animation: tilt-shaking 0.35s ease-in-out;
 }
 
 /* EMAIL TEXT */
@@ -69,39 +105,31 @@ body {
   font-size: 49px;
   vertical-align: middle;
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: center;
   position: fixed;
   top: 40%;
   left: 100%;
-  transition: transform 1s ease-out;
+  will-change: transform;
 }
 
 .mainText {
   font-size: 5vw;
   margin-left: 10px;
   font-weight: 800;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
 }
 
 .mainTextEnding {
-  color: #ffffff00;
-  transition: color 1s ease-out;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+  will-change: opacity;
 }
 
-@keyframes bounce2 {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-30px);
-  }
-  60% {
-    transform: translateY(-15px);
-  }
+.mainTextEnding.visible {
+  opacity: 1;
 }
 
 .emailCopiedAlert {
@@ -114,17 +142,30 @@ body {
   left: 50%;
 
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #ffffffdc;
   text-decoration: none;
 
-  padding: 25px;
+  padding: 16px 24px;
 
-  border: 3px solid rgba(255, 255, 255, 0.24);
-  border-radius: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.24);
+  border-radius: 20px;
 
   opacity: 0;
-  transition: opacity 0.5s ease-out;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 10px, 0) scale(0.96);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease;
+  z-index: 100;
+  will-change: transform, opacity;
+}
+
+.emailCopiedAlert.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 /* SCROLLING ANIMATION */
@@ -138,19 +179,27 @@ body {
   justify-content: space-around;
 
   opacity: 1;
-  transition: opacity 0.3s ease-out;
+  visibility: visible;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  pointer-events: none;
+}
+
+.scrollContainer.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 @keyframes wheel {
-  to {
-    opacity: 0;
-    top: 60px;
+  0% {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0);
   }
-}
-@-webkit-keyframes wheel {
-  to {
+  30% {
+    opacity: 1;
+  }
+  100% {
     opacity: 0;
-    top: 60px;
+    transform: translate3d(-50%, 40px, 0);
   }
 }
 
@@ -161,37 +210,48 @@ body {
   border-radius: 60px;
   position: relative;
 }
+
 .scrollAnimation::before {
   content: "";
   width: 12px;
   height: 12px;
   position: absolute;
-  top: 10px;
+  top: 14px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate3d(-50%, 0, 0);
   background-color: #9b9b9b;
   border-radius: 50%;
-  opacity: 1;
-  animation: wheel 2s infinite;
-  -webkit-animation: wheel 2s infinite;
+  animation: wheel 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  will-change: transform, opacity;
 }
 
 /* PORTFOLIO LINKS */
 .linksContainer {
   width: 100%;
   position: fixed;
-  bottom: 10px;
+  bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
   opacity: 0;
-  transition: opacity 1s ease-out;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 20px, 0);
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease-out;
+  z-index: 10;
+}
+
+.linksContainer.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
 }
 
 .frostedBox {
   background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #ffffffdc;
 
   display: inline-block;
@@ -211,13 +271,18 @@ body {
   height: 150px;
 
   cursor: pointer;
-  transition: all 200ms ease-in-out;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+  will-change: transform;
 }
 
 .linksComponent:hover {
-  background-color: #82b0ff79;
-  border: 3px solid #ffffffa2;
-  box-shadow: 0px 0px 3rem 15px #ffffff6e;
+  transform: translateY(-4px);
+  background-color: rgba(130, 176, 255, 0.47);
+  border-color: rgba(255, 255, 255, 0.63);
+  box-shadow: 0px 8px 30px rgba(130, 176, 255, 0.3);
 }
 
 .linksHeader {
@@ -251,17 +316,22 @@ body {
 
 @media only screen and (max-width: 767px) {
   .mainTextContainer {
-    top: 30%;
+    top: 25%;
+  }
+
+  .mainText {
+    font-size: 7vw;
   }
 
   .emailCopiedAlert {
     font-size: 11px;
-    padding: 15px;
+    padding: 12px 16px;
   }
 
   .linksContainer {
     display: grid;
     width: 100%;
+    bottom: 10px;
   }
 
   .frostedBox {
@@ -270,22 +340,39 @@ body {
   }
 
   .linksComponent {
-    margin-top: 20px;
-    width: 83%;
+    margin: 8px auto;
+    width: 85%;
     height: 80px;
   }
+
   .linksHeader {
     font-size: 11px;
     align-items: center;
     margin-bottom: 0px;
   }
+
   .logo {
     width: 30px;
   }
+
   .linksDescription {
     margin-top: 0px;
     font-size: 11px;
     font-weight: 400;
     line-height: calc(1ex / 0.32);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .scrollAnimation::before {
+    animation: none;
   }
 }
