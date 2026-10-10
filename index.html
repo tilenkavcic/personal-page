@@ -41,7 +41,13 @@
 
     <div class="contentLength"></div>
     <div class="mainTextContainer">
-      <div class="mainText transition-text" onclick="copyDivToClipboard(event)">
+      <div
+        class="mainText transition-text"
+        role="button"
+        tabindex="0"
+        aria-label="Copy email address"
+        onclick="copyDivToClipboard(event)"
+      >
         HEY<span class="mainTextEnding">@TILENKAVCIC.COM</span>
       </div>
     </div>
@@ -72,30 +78,65 @@
     </div>
 
     <div class="linksContainer">
-      <a href="https://odvetni.vercel.app" target="_blank" class="linksComponent frostedBox">
-        <div class="linksHeader">
-          <img src="photos/odvetni-logo.png" alt="Odvetni logo" class="logo" />
-          <h2 class="linksTitle">Odvetni</h2>
+      <div class="projectsWrapper">
+        <div class="inactiveWrapper">
+          <div class="inactivePopover">
+            <a href="https://odvetni.vercel.app" target="_blank" rel="noopener noreferrer" class="linksComponent frostedBox">
+              <div class="linksHeader">
+                <img src="photos/odvetni-logo.png" alt="Odvetni logo" class="logo" />
+                <h2 class="linksTitle">Odvetni</h2>
+              </div>
+              <p class="linksDescription">Legal help from the Slovenian AI-powered assistant.</p>
+            </a>
+            <a href="https://fast-link.vercel.app" target="_blank" rel="noopener noreferrer" class="linksComponent frostedBox">
+              <div class="linksHeader">
+                <img src="photos/the-fast-link-logo1.png" alt="The Fast Link logo" class="logo" />
+                <h2 class="linksTitle">The Fast Link</h2>
+              </div>
+              <p class="linksDescription">
+                Get your podcast heard. We generate subscribe-worthy links for any podcasting app.
+              </p>
+            </a>
+          </div>
+          <button type="button" class="inactiveTrigger" aria-expanded="false" aria-label="Toggle past projects">
+            <span class="inactiveTriggerText">Past projects</span>
+            <svg
+              class="inactiveChevron"
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
         </div>
-        <p class="linksDescription">Legal help from the Slovenian AI-powered assistant.</p>
-      </a>
-      <a href="https://www.meloan.si" target="_blank" class="linksComponent frostedBox">
-        <div class="linksHeader">
-          <img src="photos/meloan-logo.png" alt="MeLoan logo" class="logo" />
-          <h2 class="linksTitle">MeLoan</h2>
-          <span class="linksSubtitle">Co-founder</span>
+
+        <div class="activeProjects">
+          <a href="https://www.meloan.si" target="_blank" rel="noopener noreferrer" class="linksComponent frostedBox">
+            <div class="linksHeader">
+              <img src="photos/meloan-logo.png" alt="MeLoan logo" class="logo" />
+              <h2 class="linksTitle">MeLoan</h2>
+              <span class="linksSubtitle">Co-founder</span>
+            </div>
+            <p class="linksDescription">Get your personalized mortgage offer from any bank in one place.</p>
+          </a>
+          <a href="https://autoclear.eu/" target="_blank" rel="noopener noreferrer" class="linksComponent frostedBox">
+            <div class="linksHeader">
+              <img src="photos/autoclear-logo.svg" alt="Autoclear logo" class="logo" />
+              <h2 class="linksTitle">Autoclear</h2>
+            </div>
+            <p class="linksDescription">
+              Smart cross-border used vehicle aggregator with import duty and DMV calculation.
+            </p>
+          </a>
         </div>
-        <p class="linksDescription">Get your personalized mortgage offer from any bank in one place.</p>
-      </a>
-      <a href="https://fast-link.vercel.app" target="_blank" class="linksComponent frostedBox">
-        <div class="linksHeader">
-          <img src="photos/the-fast-link-logo1.png" alt="The Fast Link logo" class="logo" />
-          <h2 class="linksTitle">The Fast Link</h2>
-        </div>
-        <p class="linksDescription">
-          Get your podcast heard. We generate subscribe-worthy links for any podcasting app.
-        </p>
-      </a>
+      </div>
     </div>
   </body>
 </html>
