@@ -40,7 +40,23 @@ document.addEventListener("DOMContentLoaded", function () {
     return Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
   }
 
+  // Smooth symmetrical S-curve: zero velocity at boundaries, uniform feel in both directions
+  function smoothstep(t) {
+    const clamped = Math.max(0, Math.min(1, t));
+    return clamped * clamped * (3 - 2 * clamped);
+  }
+
   let maxScroll = getMaxScroll();
+
+  function getScrollProgress() {
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    return Math.min(Math.max(scrollY / maxScroll, 0), 1);
+  }
+
+  let targetProgress = getScrollProgress();
+  let currentProgress = targetProgress;
+  let animId = null;
+  let lastTime = performance.now();
 
   let resizeTimeout;
   window.addEventListener(
@@ -49,38 +65,37 @@ document.addEventListener("DOMContentLoaded", function () {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(function () {
         maxScroll = getMaxScroll();
-        update();
+        targetProgress = getScrollProgress();
+        currentProgress = targetProgress;
+        render(currentProgress);
       }, 100);
     },
     { passive: true }
   );
 
-  let isTicking = false;
-
-  function update() {
-    const scrollY = window.scrollY || window.pageYOffset || 0;
-    const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
-
+  function render(progress) {
     // Animate background gradient
     if (bgGradient) {
       const turn = progress * 0.05;
       bgGradient.style.setProperty("--bg-turn", `${turn}turn`);
     }
 
-    // Slide main text: progress 0 to 0.5 maps to translateX 0 to -minTranslateX
+    // Slide main text: progress 0 to 0.55 maps to translateX 0 to -minTranslateX
+    // Symmetrical smoothstep ensures running left and running right have identical smooth physics
     const minTranslateX = getMinTranslateX();
-    const slideProgress = Math.min(progress / 0.5, 1);
-    const translateX = -(slideProgress * minTranslateX);
+    const rawSlide = Math.min(progress / 0.55, 1);
+    const easedSlide = smoothstep(rawSlide);
+    const translateX = -(easedSlide * minTranslateX);
     mainTextContainer.style.transform = `translate3d(${translateX}%, 0, 0)`;
 
     // Scroll indicator fades out quickly once scrolling starts
     if (scrollAnim) {
-      scrollAnim.classList.toggle("hidden", progress > 0.05);
+      scrollAnim.classList.toggle("hidden", progress > 0.04);
     }
 
-    // Reveal email ending after text has slid into view
+    // Reveal email ending smoothly as text settles into place
     if (mainTextEnding) {
-      mainTextEnding.classList.toggle("visible", progress >= 0.5);
+      mainTextEnding.classList.toggle("visible", progress >= 0.48);
     }
 
     // Reveal header and links towards bottom
@@ -99,6 +114,40 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function tick(now) {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      currentProgress = targetProgress;
+      render(currentProgress);
+      animId = null;
+      return;
+    }
+
+    const dt = Math.min((now - lastTime) / 1000, 0.1);
+    lastTime = now;
+
+    const diff = targetProgress - currentProgress;
+    if (Math.abs(diff) < 0.0001) {
+      currentProgress = targetProgress;
+      render(currentProgress);
+      animId = null;
+    } else {
+      // Natural inertial damping: smooths mouse-wheel steps into a continuous fluid glide in both directions
+      const factor = 1 - Math.exp(-8.5 * dt);
+      currentProgress += diff * factor;
+      render(currentProgress);
+      animId = requestAnimationFrame(tick);
+    }
+  }
+
+  function onScroll() {
+    targetProgress = getScrollProgress();
+    if (!animId) {
+      lastTime = performance.now();
+      animId = requestAnimationFrame(tick);
+    }
+  }
+
   const mainText = document.querySelector(".mainText");
   if (mainText) {
     mainText.addEventListener("keydown", function (e) {
@@ -109,21 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  window.addEventListener(
-    "scroll",
-    function () {
-      if (!isTicking) {
-        window.requestAnimationFrame(function () {
-          update();
-          isTicking = false;
-        });
-        isTicking = true;
-      }
-    },
-    { passive: true }
-  );
+  window.addEventListener("scroll", onScroll, { passive: true });
 
-  update();
+  render(currentProgress);
 });
 
 let copyTimeout;

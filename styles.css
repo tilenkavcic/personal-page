@@ -111,6 +111,9 @@ body {
   top: 40%;
   left: 100%;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   z-index: 5;
 }
 
@@ -122,11 +125,14 @@ body {
   user-select: none;
   -webkit-user-select: none;
   white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .mainTextEnding {
   opacity: 0;
-  transition: opacity 0.5s ease-out;
+  transition: opacity 0.4s ease-out;
   will-change: opacity;
 }
 
